@@ -8,3 +8,5 @@ INSERT INTO accounts values ('a007','남궁준',20130329007,7777,0,01007,'아이
 INSERT INTO accounts values ('a008','배은지',20130329008,8888,0,01008,'낙스넷',sysdate);
 INSERT INTO accounts values ('a009','여인률',20130329009,9999,0,01009,'수펙스테크놀러지',sysdate);
 INSERT INTO accounts values ('a010','유병찬',20130329010,1010,0,01010,'디지털플러스시스템',sysdate);
+
+
