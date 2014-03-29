@@ -47,7 +47,7 @@ public class AccountDAO {
 	public static void deleteAccount(String id) throws SQLException{
 		SqlSession session = AccountDBUtil.getSqlSession(true);
 		try{
-			session.delete("deleteAccount", id);
+			session.delete("deleteAccountById", id);
 		}finally{
 			session.close();
 		}
@@ -65,15 +65,24 @@ public class AccountDAO {
 		}
 	}
 	
-	public static void withdraw(String id, int amount) throws SQLException{
-		SqlSession session = AccountDBUtil.getSqlSession(true);
+	public static boolean withdraw(String id, int amount) throws SQLException{
+		boolean result = false;
+		SqlSession session = AccountDBUtil.getSqlSession();
 		try{
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
-			account.setAmount(account.getAmount() - amount);
+			if(account.getAmount()-amount>=0){
+				account.setAmount(account.getAmount() - amount);
+				session.commit();
+				result=true;
+			}else{
+				System.out.println("돈없으니까 집에가서 빈대떡이나 먹어");
+				session.rollback();
+			}
 			session.update("updateAccount", account);
 		}finally{
 			session.close();
 		}
+		return result;
 	}
 	
 	public static boolean checkPw(String id, String pw)
@@ -93,18 +102,25 @@ public class AccountDAO {
 	}
 	
 	public static void transfer(String myId, String pw, int amount, String id){
-		SqlSession session = AccountDBUtil.getSqlSession(true);
+		SqlSession session = AccountDBUtil.getSqlSession();
 		try{
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
 			if(checkPw(myId,pw)){
-				withdraw(myId,amount);
+				if(withdraw(myId,amount)){
+					if(account!=null){
+						deposit(id,amount);
+						session.commit();
+					}else{
+						System.out.println("상대계좌 없음");
+						session.rollback();
+					}
+				}else{
+					System.out.println("너 돈없어");
+					session.rollback();
+				}
 			}else{
 				System.out.println("비번틀림");
-			}
-			if(account!=null){
-				deposit(id,amount);
-			}else{
-				System.out.println("상대계좌 없음");
+				session.rollback();
 			}
 		}catch(Exception e){
 			e.printStackTrace();
