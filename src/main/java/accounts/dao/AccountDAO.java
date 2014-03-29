@@ -13,9 +13,23 @@ import accounts.util.AccountDBUtil;
 
 public class AccountDAO {
 	
-	public static List selectAllAccounts() throws SQLException{
+	public static boolean checkPw(String id, String pw)	{
+		boolean result = false;
+		SqlSession session = AccountDBUtil.getSqlSession(true);
+		try{
+			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
+			if(account.getPassword().equals(pw))			{
+				result = true;
+			}
+		}finally{
+			session.close();
+		}	
+		return result;
+	}
+	
+	public static List<AccountDTO> selectAllAccounts() throws SQLException{
 		SqlSession session = AccountDBUtil.getSqlSession();
-		List selectAll = null;
+		List<AccountDTO> selectAll = null;
 		
 		try{
 			selectAll = session.selectList("Account.selectAllAccounts");
@@ -25,7 +39,10 @@ public class AccountDAO {
 		return selectAll;
 	}
 	
-	public static AccountDTO selectAccountById(String id, int pw) throws SQLException{
+	public static AccountDTO selectAccountById(String id, String pw) throws PwWrongException{
+		if(!checkPw(id,pw)){
+			throw new PwWrongException("비밀번호가 맞지 않습니다.");
+		}
 		SqlSession session = AccountDBUtil.getSqlSession();
 		AccountDTO account = null;
 		try {
@@ -68,7 +85,10 @@ public class AccountDAO {
 		}
 	}
 	
-	public static boolean withdraw(String id, int amount) throws SQLException, NoAmountException{
+	public static boolean withdraw(String id,String pw, int amount) throws PwWrongException, NoAmountException{
+		if(!checkPw(id,pw)){
+			throw new PwWrongException("비밀번호가 맞지 않습니다.");
+		}
 		boolean result = false;
 		SqlSession session = AccountDBUtil.getSqlSession();
 		try{
@@ -86,37 +106,19 @@ public class AccountDAO {
 		return result;
 	}
 	
-	public static boolean checkPw(String id, String pw)
-	{
-		boolean result = false;
-		SqlSession session = AccountDBUtil.getSqlSession(true);
-		try{
-			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
-			if(account.getPassword().equals(pw))
-			{
-				result = true;
-			}
-		}finally{
-			session.close();
-		}	
-		return result;
-	}
-	
+		
 	public static void transfer(String myId, String pw, int amount, String id)
 			throws PwWrongException, NoAmountException, IdNoExistException, SQLException{
 		SqlSession session = AccountDBUtil.getSqlSession();
 		try{
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
-			if(!checkPw(myId,pw))
-			{
+			if(!checkPw(myId,pw)){
 				throw new PwWrongException("비밀번호가 맞지 않습니다.");
 			}
-			if(!withdraw(myId,amount))
-			{
+			if(!withdraw(myId,pw,amount)){
 				throw new NoAmountException("잔액이 부족합니다.");
 			}
-			if(account == null)
-			{
+			if(account == null){
 				throw new IdNoExistException("존재하지 않는 계좌 입니다.");
 			}
 			deposit(id,amount);

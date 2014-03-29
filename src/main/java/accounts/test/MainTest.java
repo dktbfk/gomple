@@ -12,57 +12,22 @@ import accounts.dto.AccountDTO;
 public class MainTest {
 	public static void main(String[] args) {
 		
-		try{
-			List all = AccountDAO.selectAllAccounts();
-			for(int index = 0; index < all.size(); index++){
-				System.out.println(all.get(index));
-			}
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		System.out.println("----------------------------------------------------");
-	
-		
-		try{
-			System.out.println(AccountDAO.selectAccountById("a001",1111));
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		
-	//	try {
-	//		AccountDAO.insertAcccount(new AccountDTO("a013","1234","김선명",12345678,0,010,"서울"));
-	//	} catch (SQLException e) {
-	//		// TODO Auto-generated catch block
-	//		e.printStackTrace();
-	//	}
-		
 		try {
-			AccountDAO.deleteAccount("a013");
+			AccountDAO.insertAcccount(new AccountDTO("a001","1111","김세윤","20130329001",0,01001,"두잇시스템"));
+			/*AccountDAO.insertAcccount(new AccountDTO("a002","2222","김유리","20130329002","0","01002","더시스템시스코"));
+			AccountDAO.insertAcccount(new AccountDTO("a003","3333","김의태","20130329003","0","01003","애버커스"));
+			AccountDAO.insertAcccount(new AccountDTO("a004","4444","이규혁","20130329004","0","01004","낙스넷"));
+			AccountDAO.insertAcccount(new AccountDTO("a005","5555","김정환","20130329005","0","01005","인밸류비즈"));
+			AccountDAO.insertAcccount(new AccountDTO("a006","6666","김현수","20130329006","0","01006","애니파이브시스템"));
+			AccountDAO.insertAcccount(new AccountDTO("a007","7777","남궁준","20130329007","0","01007","아이티인프라넷"));
+			AccountDAO.insertAcccount(new AccountDTO("a008","8888","배은지","20130329008","0","01008","낙스넷"));
+			AccountDAO.insertAcccount(new AccountDTO("a009","9999","여인률","20130329009","0","01009","수펙스테크놀러지"));
+			AccountDAO.insertAcccount(new AccountDTO("a010","1010","유병찬","20130329010","0","01010","디지털플러스시스템"));
+			*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		try{
-			System.out.println(AccountDAO.selectAccountById("a001",1111));
-			System.out.println(AccountDAO.selectAccountById("a005",5555));
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		try {
-			AccountDAO.transfer("a005", "5555", 1000, "a001");
-			System.out.println(AccountDAO.selectAccountById("a001",1111));
-			System.out.println(AccountDAO.selectAccountById("a005",5555));
-		} catch (PwWrongException e1) {
-			e1.printStackTrace();
-		} catch (NoAmountException e1) {
-			e1.printStackTrace();
-		} catch (IdNoExistException e1) {
-			e1.printStackTrace();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	}
-	
 
+	}
 }

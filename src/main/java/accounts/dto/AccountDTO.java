@@ -6,7 +6,7 @@ public class AccountDTO {
 	private String id;
 	private String password;
 	private String name;
-	private long accountnumber;
+	private String accountnumber;
 	private int amount;
 	private int telphone;
 	private String address;
@@ -15,7 +15,7 @@ public class AccountDTO {
 		super();
 	}
 	public AccountDTO(String id, String password, String name,
-			long accountnumber, int amount, int telphone, String address) {
+			String accountnumber, int amount, int telphone, String address) {
 		super();
 		this.id = id;
 		this.password = password;
@@ -44,10 +44,10 @@ public class AccountDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getAccountnumber() {
+	public String getAccountnumber() {
 		return accountnumber;
 	}
-	public void setAccountnumber(long accountnumber) {
+	public void setAccountnumber(String accountnumber) {
 		this.accountnumber = accountnumber;
 	}
 	public int getAmount() {
