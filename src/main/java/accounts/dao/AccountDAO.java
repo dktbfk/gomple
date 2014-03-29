@@ -80,6 +80,7 @@ public class AccountDAO {
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
 			account.setAmount(account.getAmount() + amount);
 			session.update("updateAccount", account);
+			System.out.println(id+"님 : "+amount+"원 입금");
 		}finally{
 			session.close();
 		}
@@ -100,6 +101,7 @@ public class AccountDAO {
 			session.commit();
 			result=true;
 			session.update("updateAccount", account);
+			System.out.println(id+"님 : "+amount+"원 출금");
 		}finally{
 			session.close();
 		}
