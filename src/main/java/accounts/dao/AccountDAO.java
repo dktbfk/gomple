@@ -47,7 +47,7 @@ public class AccountDAO {
 	public static void deleteAccount(String id) throws SQLException{
 		SqlSession session = AccountDBUtil.getSqlSession(true);
 		try{
-			session.delete("deleteAccount", id);
+			session.delete("deleteAccountById", id);
 		}finally{
 			session.close();
 		}

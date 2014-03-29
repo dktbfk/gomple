@@ -42,8 +42,8 @@
 	
 	<delete id="deleteAccountById" parameterType="int">
 		delete
-		from ACCOUNT
-		where ACC_ID = #{id}
+		from ACCOUNTs
+		where ID = #{id}
 	</delete>
 
 </mapper>
