@@ -91,4 +91,25 @@ public class AccountDAO {
 		}	
 		return result;
 	}
+	
+	public static void transfer(String myId, String pw, int amount, String id){
+		SqlSession session = AccountDBUtil.getSqlSession(true);
+		try{
+			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
+			if(checkPw(myId,pw)){
+				withdraw(myId,amount);
+			}else{
+				System.out.println("비번틀림");
+			}
+			if(account!=null){
+				deposit(id,amount);
+			}else{
+				System.out.println("상대계좌 없음");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+	}
 }
