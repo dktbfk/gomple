@@ -31,7 +31,7 @@
 
 	<insert id="insertAccount" parameterType="accounts.dto.AccountDTO">
 		insert into ACCOUNTs
-		values (#{id}, #{name}, #{accountnumber}, #{password}, #{amount}, #{telphone}, #{address}, sysdate)
+		values (#{id}, #{name}, #{accountnumber}, #{password}, 0, #{telphone}, #{address}, sysdate)
 	</insert>
 	
 	<update id="updateAccount" parameterType="accounts.dto.AccountDTO">

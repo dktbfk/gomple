@@ -8,20 +8,19 @@ public class AccountDTO {
 	private String name;
 	private String accountnumber;
 	private int amount;
-	private int telphone;
+	private String telphone;
 	private String address;
 	private Date date;
 	public AccountDTO() {
 		super();
 	}
 	public AccountDTO(String id, String password, String name,
-			String accountnumber, int amount, int telphone, String address) {
+			String accountnumber, String telphone, String address) {
 		super();
 		this.id = id;
 		this.password = password;
 		this.name = name;
 		this.accountnumber = accountnumber;
-		this.amount = amount;
 		this.telphone = telphone;
 		this.address = address;
 		
@@ -56,10 +55,10 @@ public class AccountDTO {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	public int getTelphone() {
+	public String getTelphone() {
 		return telphone;
 	}
-	public void setTelphone(int telphone) {
+	public void setTelphone(String telphone) {
 		this.telphone = telphone;
 	}
 	public String getAddress() {
