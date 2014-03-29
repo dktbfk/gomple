@@ -75,5 +75,20 @@ public class AccountDAO {
 			session.close();
 		}
 	}
-
+	
+	public static boolean checkPw(String id, String pw)
+	{
+		boolean result = false;
+		SqlSession session = AccountDBUtil.getSqlSession(true);
+		try{
+			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
+			if(account.getPassword().equals(pw))
+			{
+				result = true;
+			}
+		}finally{
+			session.close();
+		}	
+		return result;
+	}
 }
