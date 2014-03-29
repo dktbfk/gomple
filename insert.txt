@@ -1,0 +1,10 @@
+INSERT INTO accounts values ('a001','김세윤',20130329001,1111,0,01001,'두잇시스템',sysdate);
+INSERT INTO accounts values ('a002','김유리',20130329002,2222,0,01002,'더시스템시스코',sysdate);
+INSERT INTO accounts values ('a003','김의태',20130329003,3333,0,01003,'애버커스',sysdate);
+INSERT INTO accounts values ('a004','이규혁',20130329004,4444,0,01004,'낙스넷',sysdate);
+INSERT INTO accounts values ('a005','김정환',20130329005,5555,0,01005,'인밸류비즈',sysdate);
+INSERT INTO accounts values ('a006','김현수',20130329006,6666,0,01006,'애니파이브시스템',sysdate);
+INSERT INTO accounts values ('a007','남궁준',20130329007,7777,0,01007,'아이티인프라넷',sysdate);
+INSERT INTO accounts values ('a008','배은지',20130329008,8888,0,01008,'낙스넷',sysdate);
+INSERT INTO accounts values ('a009','여인률',20130329009,9999,0,01009,'수펙스테크놀러지',sysdate);
+INSERT INTO accounts values ('a010','유병찬',20130329010,1010,0,01010,'디지털플러스시스템',sysdate);
