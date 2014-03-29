@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+				  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Account">
+	<!--  ***
+		실제 존재하는 table의 컬럼명과 이 데이터를 저장하고자 하는 DTO 클래스의 멤버 변수명이
+		다를 경우 매핑하는 필수 설정 
+		<resultMap id="다른 tag에서 호출해서 사용하게 되는 이 tag의 별칭" 
+						  type="property속성에서 지정한 각 멤버 변수 보유한 클래스">
+	-->
+	<resultMap id="AccountResult" type="accounts.dto.AccountDTO">
+		<result property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="accountnumber" column="ACCOUNT" />
+		<result property="password" column="PW" />
+		<result property="amount" column="AMOUNT" />
+		<result property="telphone" column="TEL" />
+		<result property="address" column="ADDR" />
+		<result property="date" column="REGDATE" />
+	</resultMap>
+
+	<select id="selectAllAccounts" resultMap="AccountResult">
+		select * from accounts
+	</select>
+
+	<select id="selectAccountById" parameterType="string" resultMap="AccountResult">
+		select id, account, amount from ACCOUNTs where id = #{id}
+	</select>
+
+	<insert id="insertAccount" parameterType="accounts.dto.AccountDTO">
+		insert into ACCOUNTs
+		values (#{id}, #{name}, #{accountnumber}, #{password}, #{amount}, #{telphone}, #{address}, sysdate)
+	</insert>
+	
+	<update id="updateAccount" parameterType="accounts.dto.AccountDTO">
+		update ACCOUNT
+		set ACC_EMAIL = #{emailAddress}
+		where ACC_ID = #{id}
+	</update>
+	
+	<delete id="deleteAccountById" parameterType="int">
+		delete
+		from ACCOUNT
+		where ACC_ID = #{id}
+	</delete>
+
+</mapper>
