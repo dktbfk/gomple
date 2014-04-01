@@ -15,7 +15,10 @@ public class MainTest {
 		
 		List<AccountDTO> list = new ArrayList<AccountDTO>();
 		
+		
+		
 		try {
+			AccountDAO.deleteAll();
 			System.out.println("============================= 계좌 등록 및 전체 출력 =============================");
 			AccountDAO.insertAcccount(new AccountDTO("a001","1111","김세윤","20130329001","01001","두잇시스템"));
 			AccountDAO.insertAcccount(new AccountDTO("a002","2222","김유리","20130329002","01002","더시스템시스코"));
@@ -77,6 +80,8 @@ public class MainTest {
 		System.out.println("============================= 계좌 출금 =============================");
 		try {
 			AccountDAO.withdraw("a002", "2222", 3000);
+			System.out.println();
+			System.out.println("***계좌에 돈이 부족할 경우***");
 			AccountDAO.withdraw("a008", "8888", 1000);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -85,7 +90,9 @@ public class MainTest {
 		
 		System.out.println("============================= 계좌 조회 =============================");
 		try {
-			System.out.println(AccountDAO.selectAccountById("a002", "1111"));
+			System.out.println();
+			System.out.println("***출금 후 계좌조회***");
+			System.out.println(AccountDAO.selectAccountById("a002", "2222"));
 		} catch (PwWrongException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,14 +105,16 @@ public class MainTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.println();
+		System.out.println("***이체시 돈이 부족할 경우***");
 		try {
 			AccountDAO.transfer("a003", "3333", 7000, "a007");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		
+		System.out.println();
+		System.out.println("***이체시 상대방 계좌가 존재하지 않을 경우***");
 		try {
 			AccountDAO.transfer("a004", "4444", 7000, "a011");
 		} catch (Exception e) {

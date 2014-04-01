@@ -74,13 +74,23 @@ public class AccountDAO {
 		
 	}
 	
+	public static void deleteAll() throws SQLException{
+		SqlSession session = AccountDBUtil.getSqlSession(true);
+		try{
+			session.delete("deleteAll");
+		}finally{
+			session.close();
+		}
+		
+	}
+	
 	public static void deposit(String id, int amount) throws SQLException{
 		SqlSession session = AccountDBUtil.getSqlSession(true);
 		try{
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
 			account.setAmount(account.getAmount() + amount);
 			session.update("updateAccount", account);
-			System.out.println(id+"님 : "+amount+"원 입금");
+			System.out.println(id+"님 : "+amount+"원 입금 성공");
 		}finally{
 			session.close();
 		}
@@ -95,13 +105,13 @@ public class AccountDAO {
 		try{
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
 			if(account.getAmount()-amount < 0){
-				throw new NoAmountException("잔액이 부족합니다.");
+				throw new NoAmountException(id+"님 출금 실패 / 잔액이 부족합니다.");
 			}
 			account.setAmount(account.getAmount() - amount);
+			session.update("updateAccount", account);
+			System.out.println(id+"님 : "+amount+"원 출금 성공");
 			session.commit();
 			result=true;
-			session.update("updateAccount", account);
-			System.out.println(id+"님 : "+amount+"원 출금");
 		}finally{
 			session.close();
 		}
@@ -125,6 +135,8 @@ public class AccountDAO {
 			}
 			deposit(id,amount);
 			session.commit();
+			System.out.println("이체성공");
+			System.out.println(myId+"님께 "+amount+"원이 입금되었습니다.");
 		}finally{
 			session.close();
 		}
