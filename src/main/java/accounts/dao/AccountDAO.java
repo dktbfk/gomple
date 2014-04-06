@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import account.exception.IdNoExistException;
+import account.exception.pwWrongException;
 import accounts.dto.AccountDTO;
 import accounts.util.AccountDBUtil;
 
@@ -96,16 +98,15 @@ public class AccountDAO {
 		SqlSession session = AccountDBUtil.getSqlSession(true);
 		try{
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
+			if(account == null)
+			{
+				throw new IdNoExistException("입력 계좌는 없는 계좌입니다.");
+			}
 			if(checkPw(myId,pw)){
-				withdraw(myId,amount);
-			}else{
-				System.out.println("비번틀림");
+				throw new pwWrongException("비밀 번호가 틀렸습니다.");
 			}
-			if(account!=null){
-				deposit(id,amount);
-			}else{
-				System.out.println("상대계좌 없음");
-			}
+			withdraw(myId,amount);
+			deposit(id,amount);
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
