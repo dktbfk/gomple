@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import account.exception.IdNoExistException;
+import account.exception.NoAmountException;
+import account.exception.PwWrongException;
 import accounts.dto.AccountDTO;
 import accounts.util.AccountDBUtil;
 
@@ -65,19 +68,17 @@ public class AccountDAO {
 		}
 	}
 	
-	public static boolean withdraw(String id, int amount) throws SQLException{
+	public static boolean withdraw(String id, int amount) throws SQLException, NoAmountException{
 		boolean result = false;
 		SqlSession session = AccountDBUtil.getSqlSession();
 		try{
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
-			if(account.getAmount()-amount>=0){
-				account.setAmount(account.getAmount() - amount);
-				session.commit();
-				result=true;
-			}else{
-				System.out.println("돈없으니까 집에가서 빈대떡이나 먹어");
-				session.rollback();
+			if(account.getAmount()-amount < 0){
+				throw new NoAmountException("잔액이 부족합니다.");
 			}
+			account.setAmount(account.getAmount() - amount);
+			session.commit();
+			result=true;
 			session.update("updateAccount", account);
 		}finally{
 			session.close();
@@ -101,29 +102,25 @@ public class AccountDAO {
 		return result;
 	}
 	
-	public static void transfer(String myId, String pw, int amount, String id){
+	public static void transfer(String myId, String pw, int amount, String id)
+			throws PwWrongException, NoAmountException, IdNoExistException, SQLException{
 		SqlSession session = AccountDBUtil.getSqlSession();
 		try{
 			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
-			if(checkPw(myId,pw)){
-				if(withdraw(myId,amount)){
-					if(account!=null){
-						deposit(id,amount);
-						session.commit();
-					}else{
-						System.out.println("상대계좌 없음");
-						session.rollback();
-					}
-				}else{
-					System.out.println("너 돈없어");
-					session.rollback();
-				}
-			}else{
-				System.out.println("비번틀림");
-				session.rollback();
+			if(!checkPw(myId,pw))
+			{
+				throw new PwWrongException("비밀번호가 맞지 않습니다.");
 			}
-		}catch(Exception e){
-			e.printStackTrace();
+			if(!withdraw(myId,amount))
+			{
+				throw new NoAmountException("잔액이 부족합니다.");
+			}
+			if(account == null)
+			{
+				throw new IdNoExistException("존재하지 않는 계좌 입니다.");
+			}
+			deposit(id,amount);
+			session.commit();
 		}finally{
 			session.close();
 		}

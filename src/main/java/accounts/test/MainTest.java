@@ -3,6 +3,9 @@ package accounts.test;
 import java.sql.SQLException;
 import java.util.List;
 
+import account.exception.IdNoExistException;
+import account.exception.NoAmountException;
+import account.exception.PwWrongException;
 import accounts.dao.AccountDAO;
 import accounts.dto.AccountDTO;
 
@@ -46,12 +49,18 @@ public class MainTest {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		AccountDAO.transfer("a005", "5555", 1000, "a001");
-		try{
+		try {
+			AccountDAO.transfer("a005", "5555", 1000, "a001");
 			System.out.println(AccountDAO.selectAccountById("a001",1111));
 			System.out.println(AccountDAO.selectAccountById("a005",5555));
-		}catch(SQLException e){
-			e.printStackTrace();
+		} catch (PwWrongException e1) {
+			e1.printStackTrace();
+		} catch (NoAmountException e1) {
+			e1.printStackTrace();
+		} catch (IdNoExistException e1) {
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 	}
 	
