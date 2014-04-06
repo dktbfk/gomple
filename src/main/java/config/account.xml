@@ -26,7 +26,7 @@
 	</select>
 
 	<select id="selectAccountById" parameterType="string" resultMap="AccountResult">
-		select id, account, amount from ACCOUNTs where id = #{id}
+		select * from ACCOUNTs where id = #{id}
 	</select>
 
 	<insert id="insertAccount" parameterType="accounts.dto.AccountDTO">
