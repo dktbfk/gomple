@@ -54,7 +54,26 @@ public class AccountDAO {
 		
 	}
 	
+	public static void deposit(String id, int amount) throws SQLException{
+		SqlSession session = AccountDBUtil.getSqlSession(true);
+		try{
+			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
+			account.setAmount(account.getAmount() + amount);
+			session.update("updateAccount", account);
+		}finally{
+			session.close();
+		}
+	}
 	
-	
+	public static void withdraw(String id, int amount) throws SQLException{
+		SqlSession session = AccountDBUtil.getSqlSession(true);
+		try{
+			AccountDTO account = (AccountDTO)session.selectOne("selectAccountById", id);
+			account.setAmount(account.getAmount() - amount);
+			session.update("updateAccount", account);
+		}finally{
+			session.close();
+		}
+	}
 
 }

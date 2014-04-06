@@ -35,15 +35,15 @@
 	</insert>
 	
 	<update id="updateAccount" parameterType="accounts.dto.AccountDTO">
-		update ACCOUNT
-		set ACC_EMAIL = #{emailAddress}
-		where ACC_ID = #{id}
+		update ACCOUNTs
+		set AMOUNT = #{amount}
+		where ID = #{id}
 	</update>
 	
 	<delete id="deleteAccountById" parameterType="int">
 		delete
-		from ACCOUNT
-		where ACC_ID = #{id}
+		from ACCOUNTs
+		where ID = #{id}
 	</delete>
 
 </mapper>
